@@ -1,15 +1,47 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
+import AuthContext from "../store/auth-context";
+import Modal from "../UI/Modals";
 
 const WelcomePage = () => {
+  const authCtx = useContext(AuthContext);
   const [updateProfile, setUpdateProfile] = useState(false);
 
   const handleProfileForm = () => {
     setUpdateProfile(false);
   };
+
+  const verifyEmailHandler = async () => {
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requestType: "VERIFY_EMAIL",
+            idToken: authCtx.token,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        const data = await response.json();
+        console.log(data);
+        throw new Error(data.error.message);
+      }
+    } catch (error) {
+      authCtx.showModal({
+        title: "Couldn't verify Email",
+        message: error.message || "Something went wrong!",
+      });
+    }
+  };
   return (
     <>
+      {authCtx.modalMsg && <Modal />}
       <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 text-white p-6 shadow-lg mb-6">
         <div className="mb-4 md:mb-0">
           {updateProfile ? (
@@ -41,6 +73,15 @@ const WelcomePage = () => {
           )}
         </div>
       </header>
+      <main className="flex justify-center mt-2">
+        <button
+          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
+          type="button"
+          onClick={verifyEmailHandler}
+        >
+          Verify Email ID
+        </button>
+      </main>
       {updateProfile && <ProfileForm onCancel={handleProfileForm} />}
     </>
   );
