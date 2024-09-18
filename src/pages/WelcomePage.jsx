@@ -4,6 +4,10 @@ import ProfileForm from "../components/ProfileForm";
 
 const WelcomePage = () => {
   const [updateProfile, setUpdateProfile] = useState(false);
+
+  const handleProfileForm = () => {
+    setUpdateProfile(false);
+  };
   return (
     <>
       <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 text-white p-6 shadow-lg mb-6">
@@ -25,16 +29,19 @@ const WelcomePage = () => {
           ) : (
             <p className="text-lg md:text-right">Your profile is incomplete.</p>
           )}
-          <button className="bg-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-100 transition duration-200"
-            onClick={() => {
-              setUpdateProfile(true);
-            }}
-          >
-            Complete now!
-          </button>
+          {!updateProfile && (
+            <button
+              className="bg-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-100 transition duration-200"
+              onClick={() => {
+                setUpdateProfile(true);
+              }}
+            >
+              Complete now!
+            </button>
+          )}
         </div>
       </header>
-      {updateProfile && <ProfileForm />}
+      {updateProfile && <ProfileForm onCancel={handleProfileForm} />}
     </>
   );
 };
