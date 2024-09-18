@@ -17,7 +17,7 @@ const AuthProvider = (props) => {
   };
 
   const loginHandler = (token) => {
-    
+    setToken(token);
   }
 
   const contextValue = {
@@ -25,7 +25,7 @@ const AuthProvider = (props) => {
     modalMsg: modalMsg,
     showModal: modalMsgHandler,
     isLoggedIn: isLoggedIn,
-    loginHandler: (token) => {},
+    loginHandler: loginHandler,
   };
 
   return (

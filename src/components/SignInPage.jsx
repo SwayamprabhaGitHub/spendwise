@@ -1,10 +1,11 @@
 import React, { useContext, useRef } from "react";
 import Modal from "../UI/Modals";
 import AuthContext from "../store/auth-context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignInPage = () => {
   const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const emailSignInRef = useRef();
   const pswrdSignInRef = useRef();
@@ -16,34 +17,34 @@ const SignInPage = () => {
     const enteredSignInPswrd = pswrdSignInRef.current.value;
 
     const signInHandler = async () => {
-        try {
-            const response = await fetch(
-                "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    email: enteredSignInMail,
-                    password: enteredSignInPswrd,
-                    returnSecureToken: true,
-                  }),
-                  headers: {"Content-Type": "application/json"}
-                }
-              );
-              if(response.ok) {
-                const data = await response.json();
-                console.log(data);
-              }
-              else {
-                const data = await response.json();
-                console.log(data)
-                throw new Error(data.error.message || 'Could not Log In. Try again!')
-              }
+      try {
+        const response = await fetch(
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: enteredSignInMail,
+              password: enteredSignInPswrd,
+              returnSecureToken: true,
+            }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          authCtx.loginHandler(data.idToken);
+          navigate("/welcome");
+        } else {
+          const data = await response.json();
+          console.log(data);
+          throw new Error(data.error.message || "Could not Log In. Try again!");
         }
-      catch(error) {
+      } catch (error) {
         authCtx.showModal({
-            title: "Sign In Failed",
-            message: error.message || "Something went wrong!",
-          });
+          title: "Sign In Failed",
+          message: error.message || "Something went wrong!",
+        });
       }
     };
     signInHandler();
