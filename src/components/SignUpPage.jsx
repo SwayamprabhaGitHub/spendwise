@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Modal from "../UI/Modals";
+import AuthContext from "../store/auth-context";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
-  const [modalMsg, setModalMsg] = useState(null);
+  const authCtx = useContext(AuthContext);
 
   const emailRef = useRef();
   const pswrdRef = useRef();
@@ -16,7 +18,7 @@ const SignUpPage = () => {
     const enteredConfirmPswrd = confirmPswrdRef.current.value;
 
     if (enteredPswrd !== enteredConfirmPswrd) {
-      setModalMsg({
+      authCtx.showModal({
         title: "Invalid input",
         message: "Password and confirm password does not match",
       });
@@ -25,7 +27,7 @@ const SignUpPage = () => {
       confirmPswrdRef.current.value = "";
       return;
     }
-    setModalMsg(null);
+    authCtx.showModal(null);
     const signupHandler = async () => {
       try {
         const response = await fetch(
@@ -43,7 +45,7 @@ const SignUpPage = () => {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          setModalMsg({
+          authCtx.showModal({
             title: "Sign Up Successful",
             message: "You can login now",
           });
@@ -53,7 +55,7 @@ const SignUpPage = () => {
           throw new Error(data.error.message || "Sign up failed");
         }
       } catch (error) {
-        setModalMsg({
+        authCtx.showModal({
           title: "Sign Up Failed",
           message: error.message || "Something went wrong!",
         });
@@ -66,19 +68,9 @@ const SignUpPage = () => {
     confirmPswrdRef.current.value = "";
   };
 
-  const closeModalHandler = () => {
-    setModalMsg(null);
-  };
-
   return (
     <>
-      {modalMsg && (
-        <Modal
-          title={modalMsg.title}
-          message={modalMsg.message}
-          onConfirm={closeModalHandler}
-        />
-      )}
+      {authCtx.modalMsg && <Modal />}
       <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <form
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"
@@ -140,9 +132,9 @@ const SignUpPage = () => {
           </button>
         </form>
         <div className="mt-4">
-          <button className="text-blue-500 hover:underline">
+          <Link className="text-blue-500 hover:underline" to="/">
             Have an account? Login
-          </button>
+          </Link>
         </div>
       </section>
     </>
