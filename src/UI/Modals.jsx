@@ -1,13 +1,21 @@
 import React, { useContext } from "react";
+import ReactDOM from "react-dom";
 import AuthContext from "../store/auth-context";
 
-const Modal = () => {
+const Overlay = () => {
   const authCtx = useContext(AuthContext);
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => {authCtx.showModal(null)}}>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={() => {
+        authCtx.showModal(null);
+      }}
+    >
       <section className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative z-10">
         <header className="mb-4">
-          <h1 className="text-xl font-semibold text-gray-800">{authCtx.modalMsg.title}</h1>
+          <h1 className="text-xl font-semibold text-gray-800">
+            {authCtx.modalMsg.title}
+          </h1>
         </header>
         <div className="mb-6">
           <p className="text-gray-600">{authCtx.modalMsg.message}</p>
@@ -15,7 +23,9 @@ const Modal = () => {
         <footer className="flex justify-end">
           <button
             type="button"
-            onClick={() => {authCtx.showModal(null)}}
+            onClick={() => {
+              authCtx.showModal(null);
+            }}
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
           >
             Okay
@@ -23,6 +33,17 @@ const Modal = () => {
         </footer>
       </section>
     </div>
+  );
+};
+
+const Modal = () => {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Overlay />,
+        document.getElementById("modal-root")
+      )}
+    </React.Fragment>
   );
 };
 
