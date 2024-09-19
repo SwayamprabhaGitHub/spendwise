@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthContext from "./auth-context";
 
 const AuthProvider = (props) => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [modalMsg, setModalMsg] = useState(null);
 
   const isLoggedIn = !!token;
@@ -10,15 +10,20 @@ const AuthProvider = (props) => {
   const modalMsgHandler = (msg) => {
     if (msg !== null) {
       setModalMsg({ title: msg.title, message: msg.message });
-    }
-    else {
-        setModalMsg(null);
+    } else {
+      setModalMsg(null);
     }
   };
 
   const loginHandler = (token) => {
     setToken(token);
-  }
+    localStorage.setItem("token", token);
+  };
+
+  const logoutHandler = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+  };
 
   const contextValue = {
     token: token,
@@ -26,6 +31,7 @@ const AuthProvider = (props) => {
     showModal: modalMsgHandler,
     isLoggedIn: isLoggedIn,
     loginHandler: loginHandler,
+    logoutHandler: logoutHandler,
   };
 
   return (

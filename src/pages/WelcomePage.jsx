@@ -2,14 +2,21 @@ import React, { useContext, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import AuthContext from "../store/auth-context";
 import Modal from "../UI/Modals";
+import { useNavigate } from "react-router-dom";
 
 const WelcomePage = () => {
   const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   const [updateProfile, setUpdateProfile] = useState(false);
 
   const handleProfileForm = () => {
     setUpdateProfile(false);
   };
+
+  const logOutUserHandler = () => {
+    authCtx.logoutHandler();
+    navigate('/');
+  }
 
   const verifyEmailHandler = async () => {
     try {
@@ -71,6 +78,7 @@ const WelcomePage = () => {
               Complete now!
             </button>
           )}
+          <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200" onClick={logOutUserHandler}>Log Out</button>
         </div>
       </header>
       <main className="flex justify-center mt-2">
