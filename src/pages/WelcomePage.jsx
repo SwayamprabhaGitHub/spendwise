@@ -3,6 +3,7 @@ import ProfileForm from "../components/ProfileForm";
 import AuthContext from "../store/auth-context";
 import Modal from "../UI/Modals";
 import { useNavigate } from "react-router-dom";
+import DailyExpensesForm from "../components/DailyExpensesForm";
 
 const WelcomePage = () => {
   const authCtx = useContext(AuthContext);
@@ -91,6 +92,7 @@ const WelcomePage = () => {
         </button>
       </main>
       {updateProfile && <ProfileForm onCancel={handleProfileForm} />}
+      {authCtx.isLoggedIn && <DailyExpensesForm />}
     </>
   );
 };
