@@ -89,12 +89,20 @@ const SignInPage = () => {
               ref={pswrdSignInRef}
             />
           </div>
+          <div className="flex justify-center mb-2">
+            <Link
+              className="text-red-500 hover:underline"
+              to="/forgotpassword"
+            >
+              Forgot Password?
+            </Link>
+          </div>
 
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition duration-200"
           >
-            Sign In
+            Login
           </button>
         </form>
         <div className="mt-4">
