@@ -19,7 +19,7 @@ const SignInPage = () => {
     const signInHandler = async () => {
       try {
         const response = await fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
           {
             method: "POST",
             body: JSON.stringify({
@@ -33,7 +33,7 @@ const SignInPage = () => {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          authCtx.loginHandler(data.idToken);
+          authCtx.loginHandler(data.idToken, enteredSignInMail);
           navigate("/welcome");
         } else {
           const data = await response.json();

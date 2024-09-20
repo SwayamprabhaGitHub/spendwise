@@ -2,10 +2,11 @@ import React from "react";
 
 const AuthContext = React.createContext({
   token: "",
+  userEmail: "",
   modalMsg: "",
   showModal: (msg) => {},
   isLoggedIn: false,
-  loginHandler: (token) => {},
+  loginHandler: (token, email) => {},
   logoutHandler: () => {},
 });
 

@@ -15,7 +15,7 @@ const ProfileForm = (props) => {
 
     const updateHandler = async () => {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
         {
           method: "POST",
           body: JSON.stringify({
@@ -42,7 +42,7 @@ const ProfileForm = (props) => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
         {
           method: "POST",
           body: JSON.stringify({ idToken: authCtx.token }),

@@ -22,7 +22,7 @@ const WelcomePage = () => {
   const verifyEmailHandler = async () => {
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBC5LuvlgtEYmhcIe4zF0bgh8d6M60YWr4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
         {
           method: "POST",
           body: JSON.stringify({
