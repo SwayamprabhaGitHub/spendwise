@@ -5,6 +5,8 @@ import AuthContext from "../store/auth-context";
 const DailyExpensesForm = () => {
   const authCtx = useContext(AuthContext);
   const [expenses, setExpenses] = useState([]);
+  const [isEditing, setIsEditing] = useState(false); // To track editing state
+  const [editExpenseId, setEditExpenseId] = useState(null); // Track the ID of the expense being edited
 
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -52,39 +54,87 @@ const DailyExpensesForm = () => {
       category: selectedCategory,
     };
 
-    const addExpense = async () => {
-      const userMail = authCtx.userEmail.replace(".", "");
+    const userMail = authCtx.userEmail.replace(".", "");
+
+    const addOrEditExpense = async () => {
       try {
-        const response = await fetch(
-          `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses.json`,
-          {
-            method: "POST",
-            body: JSON.stringify(newExpense),
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        let url = `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses.json`;
+        let method = "POST";
+
+        if (isEditing) {
+          url = `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${editExpenseId}.json`;
+          method = "PUT";
+        }
+
+        const response = await fetch(url, {
+          method: method,
+          body: JSON.stringify(newExpense),
+          headers: { "Content-Type": "application/json" },
+        });
+
         if (response.ok) {
           getExpenses();
-          // setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+          if (isEditing) {
+            setIsEditing(false);
+            setEditExpenseId(null);
+            authCtx.showModal({
+              title: "Expense Updated",
+              message: "expense updated successfully",
+            });
+          }
         } else {
-          const data = await response.json();
-          console.log(data);
-          throw new Error(data.error.message || "something went wrong");
+          throw new Error("Something went wrong");
         }
       } catch (error) {
         authCtx.showModal({
-          title: "Couldn,t add expense",
+          title: "Couldn't save expense",
           message: error.message || "Something went wrong",
         });
-        console.log(error);
       }
     };
 
-    addExpense();
+    addOrEditExpense();
 
     amountInputRef.current.value = "";
     descriptionInputRef.current.value = "";
     categoryInputRef.current.value = "";
+  };
+
+  const editExpenseHandler = (expense) => {
+    setIsEditing(true);
+    setEditExpenseId(expense.id);
+
+    amountInputRef.current.value = expense.amount;
+    descriptionInputRef.current.value = expense.description;
+    categoryInputRef.current.value = expense.category;
+  };
+
+  const deleteExpenseHandler = async (id) => {
+    const userMail = authCtx.userEmail.replace(".", "");
+    try {
+      const response = await fetch(
+        `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        getExpenses();
+        authCtx.showModal({
+          title: "Expense Deleted",
+          message: "The expense was successfully deleted.",
+        });
+      } else {
+        const data = await response.json();
+        console.log(data);
+        throw new Error(data.error.message || "Something went wrong");
+      }
+    } catch (error) {
+      authCtx.showModal({
+        title: "Couldn't delete expense",
+        message: error.message || "Something went wrong",
+      });
+    }
   };
 
   useEffect(() => {
@@ -96,7 +146,7 @@ const DailyExpensesForm = () => {
     <>
       <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-6">
         <h2 className="text-2xl font-semibold text-center mb-4">
-          Add Daily Expense
+          {isEditing ? "Edit Expense" : "Add Daily Expense"}
         </h2>
         <form onSubmit={submitHandler} className="space-y-4">
           <div>
@@ -156,11 +206,15 @@ const DailyExpensesForm = () => {
             type="submit"
             className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
           >
-            Add Expense
+            {isEditing ? "Update Expense" : "Add Expense"}
           </button>
         </form>
       </div>
-      <DailyExpensesList expenseList={expenses} />
+      <DailyExpensesList
+        expenseList={expenses}
+        onDeleteExpense={deleteExpenseHandler}
+        onEditExpense={editExpenseHandler}
+      />
     </>
   );
 };
