@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/auth-slice";
 
 const WelcomePage = () => {
-  const isAuth = useSelector(state => state.isLoggedIn);
-  const authToken = useSelector(state => state.token);
+  const isAuth = useSelector(state => state.auth.isLoggedIn);
+  const authToken = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
   const navigate = useNavigate();

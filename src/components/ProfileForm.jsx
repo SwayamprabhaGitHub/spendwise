@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const ProfileForm = (props) => {
-  const authToken = useSelector(state => state.token)
+  const authToken = useSelector(state => state.auth.token)
   const profileNameRef = useRef();
   const profilePhotoRef = useRef();
 

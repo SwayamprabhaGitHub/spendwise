@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DailyExpensesList from "./DailyExpensesList";
 import ModalContext from "../store/modal-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { expenseActions } from "../store/expenses-slice";
 
 const DailyExpensesForm = () => {
-  const authEmail = useSelector(state => state.email);
+  const authEmail = useSelector((state) => state.auth.email);
+  const expenseList = useSelector((state) => state.expense.expenses)
+  const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
-  const [expenses, setExpenses] = useState([]);
+  // const [expenses, setExpenses] = useState([]);
   const [isEditing, setIsEditing] = useState(false); // To track editing state
   const [editExpenseId, setEditExpenseId] = useState(null); // Track the ID of the expense being edited
 
@@ -24,6 +27,7 @@ const DailyExpensesForm = () => {
         const data = await response.json();
         console.log(data);
         const fetchedData = [];
+        let totalAmount = 0;
         for (const key in data) {
           fetchedData.push({
             id: key,
@@ -31,8 +35,15 @@ const DailyExpensesForm = () => {
             description: data[key].description,
             category: data[key].category,
           });
+          totalAmount += parseFloat(data[key].amount);
         }
-        setExpenses(fetchedData);
+        dispatch(
+          expenseActions.replaceExpenses({
+            expenses: fetchedData,
+            amount: totalAmount,
+          })
+        );
+        // setExpenses(fetchedData);
       } else {
         const data = await response.json();
         console.log(data);
@@ -75,13 +86,27 @@ const DailyExpensesForm = () => {
         });
 
         if (response.ok) {
-          getExpenses();
+          // getExpenses();
+
           if (isEditing) {
+            dispatch(
+              expenseActions.editExpense({ id: editExpenseId, ...newExpense })
+            );
             setIsEditing(false);
             setEditExpenseId(null);
             modalCtx.showModal({
               title: "Expense Updated",
               message: "expense updated successfully",
+            });
+          } else {
+            const data = await response.json();
+            const expenseId = data.name;
+            dispatch(
+              expenseActions.addExpense({ id: expenseId, ...newExpense })
+            );
+            modalCtx.showModal({
+              title: "Expense added",
+              message: "expense added successfully",
             });
           }
         } else {
@@ -121,7 +146,8 @@ const DailyExpensesForm = () => {
         }
       );
       if (response.ok) {
-        getExpenses();
+        dispatch(expenseActions.deleteExpense(id));
+        // getExpenses();
         modalCtx.showModal({
           title: "Expense Deleted",
           message: "The expense was successfully deleted.",
@@ -143,7 +169,7 @@ const DailyExpensesForm = () => {
     getExpenses();
   }, []);
 
-  console.log(expenses);
+  console.log(expenseList);
   return (
     <>
       <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-6">
@@ -213,7 +239,7 @@ const DailyExpensesForm = () => {
         </form>
       </div>
       <DailyExpensesList
-        expenseList={expenses}
+        expenseList={expenseList}
         onDeleteExpense={deleteExpenseHandler}
         onEditExpense={editExpenseHandler}
       />
