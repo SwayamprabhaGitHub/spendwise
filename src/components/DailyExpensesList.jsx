@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
-import AuthContext from "../store/auth-context";
 
 const DailyExpensesList = (props) => {
-  const authCtx = useContext(AuthContext);
 
   return (
     <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow-lg max-w-7xl mx-auto">

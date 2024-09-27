@@ -4,8 +4,13 @@ import AuthContext from "../store/auth-context";
 import Modal from "../UI/Modals";
 import { useNavigate } from "react-router-dom";
 import DailyExpensesForm from "../components/DailyExpensesForm";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store/auth-slice";
 
 const WelcomePage = () => {
+  const isAuth = useSelector(state => state.isLoggedIn);
+  const authToken = useSelector(state => state.token);
+  const dispatch = useDispatch();
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
   const [updateProfile, setUpdateProfile] = useState(false);
@@ -15,9 +20,10 @@ const WelcomePage = () => {
   };
 
   const logOutUserHandler = () => {
-    authCtx.logoutHandler();
-    navigate('/');
-  }
+    dispatch(authActions.logout());
+    // authCtx.logoutHandler();
+    navigate("/");
+  };
 
   const verifyEmailHandler = async () => {
     try {
@@ -27,7 +33,7 @@ const WelcomePage = () => {
           method: "POST",
           body: JSON.stringify({
             requestType: "VERIFY_EMAIL",
-            idToken: authCtx.token,
+            idToken: authToken,
           }),
           headers: { "Content-Type": "application/json" },
         }
@@ -79,7 +85,12 @@ const WelcomePage = () => {
               Complete now!
             </button>
           )}
-          <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200" onClick={logOutUserHandler}>Log Out</button>
+          <button
+            className="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
+            onClick={logOutUserHandler}
+          >
+            Log Out
+          </button>
         </div>
       </header>
       <main className="flex justify-center mt-2">
@@ -92,7 +103,7 @@ const WelcomePage = () => {
         </button>
       </main>
       {updateProfile && <ProfileForm onCancel={handleProfileForm} />}
-      {authCtx.isLoggedIn && <DailyExpensesForm />}
+      {isAuth && <DailyExpensesForm />}
     </>
   );
 };

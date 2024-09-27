@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DailyExpensesList from "./DailyExpensesList";
 import AuthContext from "../store/auth-context";
+import { useSelector } from "react-redux";
 
 const DailyExpensesForm = () => {
+  const authEmail = useSelector(state => state.email);
   const authCtx = useContext(AuthContext);
   const [expenses, setExpenses] = useState([]);
   const [isEditing, setIsEditing] = useState(false); // To track editing state
@@ -13,7 +15,7 @@ const DailyExpensesForm = () => {
   const categoryInputRef = useRef();
 
   const getExpenses = async () => {
-    const userMail = authCtx.userEmail.replace(".", "");
+    const userMail = authEmail.replace(".", "");
     try {
       const response = await fetch(
         `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses.json`
@@ -54,7 +56,7 @@ const DailyExpensesForm = () => {
       category: selectedCategory,
     };
 
-    const userMail = authCtx.userEmail.replace(".", "");
+    const userMail = authEmail.replace(".", "");
 
     const addOrEditExpense = async () => {
       try {
@@ -110,7 +112,7 @@ const DailyExpensesForm = () => {
   };
 
   const deleteExpenseHandler = async (id) => {
-    const userMail = authCtx.userEmail.replace(".", "");
+    const userMail = authEmail.replace(".", "");
     try {
       const response = await fetch(
         `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${id}.json`,

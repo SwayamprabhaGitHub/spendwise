@@ -2,8 +2,11 @@ import React, { useContext, useRef } from "react";
 import Modal from "../UI/Modals";
 import AuthContext from "../store/auth-context";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth-slice";
 
 const SignInPage = () => {
+  const dispatch = useDispatch();
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -33,7 +36,8 @@ const SignInPage = () => {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          authCtx.loginHandler(data.idToken, enteredSignInMail);
+          dispatch(authActions.login({idToken:data.idToken, email:enteredSignInMail}));
+          // authCtx.loginHandler(data.idToken, enteredSignInMail);
           navigate("/welcome");
         } else {
           const data = await response.json();

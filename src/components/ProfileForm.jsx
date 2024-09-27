@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useEffect, useRef } from "react";
-import AuthContext from "../store/auth-context";
+import React, { useCallback, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 
 const ProfileForm = (props) => {
-  const authCtx = useContext(AuthContext);
-
+  const authToken = useSelector(state => state.token)
   const profileNameRef = useRef();
   const profilePhotoRef = useRef();
 
@@ -19,7 +18,7 @@ const ProfileForm = (props) => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: authCtx.token,
+            idToken: authToken,
             displayName: enteredProfileName,
             photoUrl: enteredProfilePhoto,
           }),
@@ -45,7 +44,7 @@ const ProfileForm = (props) => {
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
         {
           method: "POST",
-          body: JSON.stringify({ idToken: authCtx.token }),
+          body: JSON.stringify({ idToken: authToken }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -72,7 +71,7 @@ const ProfileForm = (props) => {
     } catch (error) {
       console.error(error);
     }
-  }, [authCtx.token]);
+  }, [authToken]);
 
   useEffect(() => {
     fetchData();
