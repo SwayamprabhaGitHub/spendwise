@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AuthContext from "./auth-context";
+import ModalContext from "./modal-context";
 
-const AuthProvider = (props) => {
+const ModalProvider = (props) => {
   const [modalMsg, setModalMsg] = useState(null);
 
   const modalMsgHandler = (msg) => {
@@ -18,10 +18,10 @@ const AuthProvider = (props) => {
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
+    <ModalContext.Provider value={contextValue}>
       {props.children}
-    </AuthContext.Provider>
+    </ModalContext.Provider>
   );
 };
 
-export default AuthProvider;
+export default ModalProvider;

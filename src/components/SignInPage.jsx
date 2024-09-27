@@ -1,13 +1,13 @@
 import React, { useContext, useRef } from "react";
 import Modal from "../UI/Modals";
-import AuthContext from "../store/auth-context";
+import ModalContext from "../store/modal-context";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth-slice";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
-  const authCtx = useContext(AuthContext);
+  const modalCtx = useContext(ModalContext);
   const navigate = useNavigate();
 
   const emailSignInRef = useRef();
@@ -37,7 +37,7 @@ const SignInPage = () => {
           const data = await response.json();
           console.log(data);
           dispatch(authActions.login({idToken:data.idToken, email:enteredSignInMail}));
-          // authCtx.loginHandler(data.idToken, enteredSignInMail);
+          // modalCtx.loginHandler(data.idToken, enteredSignInMail);
           navigate("/welcome");
         } else {
           const data = await response.json();
@@ -45,7 +45,7 @@ const SignInPage = () => {
           throw new Error(data.error.message || "Could not Log In. Try again!");
         }
       } catch (error) {
-        authCtx.showModal({
+        modalCtx.showModal({
           title: "Sign In Failed",
           message: error.message || "Something went wrong!",
         });
@@ -56,7 +56,7 @@ const SignInPage = () => {
 
   return (
     <>
-      {authCtx.modalMsg && <Modal />}
+      {modalCtx.modalMsg && <Modal />}
       <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <form
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"

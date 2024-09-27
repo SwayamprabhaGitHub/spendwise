@@ -1,10 +1,10 @@
 import React, { useContext, useRef, useState } from "react";
 import Modal from "../UI/Modals";
-import AuthContext from "../store/auth-context";
+import ModalContext from "../store/modal-context";
 import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
-  const authCtx = useContext(AuthContext);
+  const modalCtx = useContext(ModalContext);
 
   const emailRef = useRef();
   const pswrdRef = useRef();
@@ -18,7 +18,7 @@ const SignUpPage = () => {
     const enteredConfirmPswrd = confirmPswrdRef.current.value;
 
     if (enteredPswrd !== enteredConfirmPswrd) {
-      authCtx.showModal({
+      modalCtx.showModal({
         title: "Invalid input",
         message: "Password and confirm password does not match",
       });
@@ -27,7 +27,7 @@ const SignUpPage = () => {
       confirmPswrdRef.current.value = "";
       return;
     }
-    authCtx.showModal(null);
+    modalCtx.showModal(null);
     const signupHandler = async () => {
       try {
         const response = await fetch(
@@ -45,7 +45,7 @@ const SignUpPage = () => {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          authCtx.showModal({
+          modalCtx.showModal({
             title: "Sign Up Successful",
             message: "You can login now",
           });
@@ -55,7 +55,7 @@ const SignUpPage = () => {
           throw new Error(data.error.message || "Sign up failed");
         }
       } catch (error) {
-        authCtx.showModal({
+        modalCtx.showModal({
           title: "Sign Up Failed",
           message: error.message || "Something went wrong!",
         });
@@ -70,7 +70,7 @@ const SignUpPage = () => {
 
   return (
     <>
-      {authCtx.modalMsg && <Modal />}
+      {modalCtx.modalMsg && <Modal />}
       <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <form
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"

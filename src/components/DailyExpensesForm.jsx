@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DailyExpensesList from "./DailyExpensesList";
-import AuthContext from "../store/auth-context";
+import ModalContext from "../store/modal-context";
 import { useSelector } from "react-redux";
 
 const DailyExpensesForm = () => {
   const authEmail = useSelector(state => state.email);
-  const authCtx = useContext(AuthContext);
+  const modalCtx = useContext(ModalContext);
   const [expenses, setExpenses] = useState([]);
   const [isEditing, setIsEditing] = useState(false); // To track editing state
   const [editExpenseId, setEditExpenseId] = useState(null); // Track the ID of the expense being edited
@@ -79,7 +79,7 @@ const DailyExpensesForm = () => {
           if (isEditing) {
             setIsEditing(false);
             setEditExpenseId(null);
-            authCtx.showModal({
+            modalCtx.showModal({
               title: "Expense Updated",
               message: "expense updated successfully",
             });
@@ -88,7 +88,7 @@ const DailyExpensesForm = () => {
           throw new Error("Something went wrong");
         }
       } catch (error) {
-        authCtx.showModal({
+        modalCtx.showModal({
           title: "Couldn't save expense",
           message: error.message || "Something went wrong",
         });
@@ -122,7 +122,7 @@ const DailyExpensesForm = () => {
       );
       if (response.ok) {
         getExpenses();
-        authCtx.showModal({
+        modalCtx.showModal({
           title: "Expense Deleted",
           message: "The expense was successfully deleted.",
         });
@@ -132,7 +132,7 @@ const DailyExpensesForm = () => {
         throw new Error(data.error.message || "Something went wrong");
       }
     } catch (error) {
-      authCtx.showModal({
+      modalCtx.showModal({
         title: "Couldn't delete expense",
         message: error.message || "Something went wrong",
       });

@@ -1,8 +1,8 @@
 import React from "react";
 
-const AuthContext = React.createContext({
+const ModalContext = React.createContext({
   modalMsg: "",
   showModal: (msg) => {},
 });
 
-export default AuthContext;
+export default ModalContext;

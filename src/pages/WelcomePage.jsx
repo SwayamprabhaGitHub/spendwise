@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
-import AuthContext from "../store/auth-context";
+import ModalContext from "../store/modal-context";
 import Modal from "../UI/Modals";
 import { useNavigate } from "react-router-dom";
 import DailyExpensesForm from "../components/DailyExpensesForm";
@@ -11,7 +11,7 @@ const WelcomePage = () => {
   const isAuth = useSelector(state => state.isLoggedIn);
   const authToken = useSelector(state => state.token);
   const dispatch = useDispatch();
-  const authCtx = useContext(AuthContext);
+  const modalCtx = useContext(ModalContext);
   const navigate = useNavigate();
   const [updateProfile, setUpdateProfile] = useState(false);
 
@@ -21,7 +21,7 @@ const WelcomePage = () => {
 
   const logOutUserHandler = () => {
     dispatch(authActions.logout());
-    // authCtx.logoutHandler();
+    // modalCtx.logoutHandler();
     navigate("/");
   };
 
@@ -47,7 +47,7 @@ const WelcomePage = () => {
         throw new Error(data.error.message);
       }
     } catch (error) {
-      authCtx.showModal({
+      modalCtx.showModal({
         title: "Couldn't verify Email",
         message: error.message || "Something went wrong!",
       });
@@ -55,7 +55,7 @@ const WelcomePage = () => {
   };
   return (
     <>
-      {authCtx.modalMsg && <Modal />}
+      {modalCtx.modalMsg && <Modal />}
       <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 text-white p-6 shadow-lg mb-6">
         <div className="mb-4 md:mb-0">
           {updateProfile ? (
