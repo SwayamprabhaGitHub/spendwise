@@ -7,6 +7,6 @@ export default {
   theme: {
     extend: {},
   },
+  darkMode: 'class', // Enable dark mode via a CSS class
   plugins: [],
 }
-

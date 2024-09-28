@@ -2,17 +2,20 @@ import React, { useContext, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import ModalContext from "../store/modal-context";
 import Modal from "../UI/Modals";
-import { useNavigate } from "react-router-dom";
 import DailyExpensesForm from "../components/DailyExpensesForm";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/auth-slice";
+import { themeActions } from "../store/theme-slice";
 
 const WelcomePage = () => {
-  const isAuth = useSelector(state => state.auth.isLoggedIn);
-  const authToken = useSelector(state => state.auth.token);
+  const isAuth = useSelector((state) => state.auth.isLoggedIn);
+  const authToken = useSelector((state) => state.auth.token);
+
   const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
   const navigate = useNavigate();
+
   const [updateProfile, setUpdateProfile] = useState(false);
 
   const handleProfileForm = () => {
@@ -21,7 +24,7 @@ const WelcomePage = () => {
 
   const logOutUserHandler = () => {
     dispatch(authActions.logout());
-    // modalCtx.logoutHandler();
+    dispatch(themeActions.resetThemeState());
     navigate("/");
   };
 
@@ -39,8 +42,10 @@ const WelcomePage = () => {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        modalCtx.showModal({
+          title: "Verifying Email",
+          message: "Please check your email!!",
+        });
       } else {
         const data = await response.json();
         console.log(data);
@@ -53,10 +58,11 @@ const WelcomePage = () => {
       });
     }
   };
+
   return (
     <>
       {modalCtx.modalMsg && <Modal />}
-      <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 text-white p-6 shadow-lg mb-6">
+      <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 dark:bg-gray-800 text-white p-6 shadow-lg mb-6">
         <div className="mb-4 md:mb-0">
           {updateProfile ? (
             <p className="text-2xl font-semibold">
@@ -77,7 +83,7 @@ const WelcomePage = () => {
           )}
           {!updateProfile && (
             <button
-              className="bg-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-100 transition duration-200"
+              className="bg-white dark:bg-gray-700 dark:text-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-200"
               onClick={() => {
                 setUpdateProfile(true);
               }}
@@ -86,16 +92,16 @@ const WelcomePage = () => {
             </button>
           )}
           <button
-            className="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
+            className="bg-red-500 dark:bg-red-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 dark:hover:bg-red-700 transition duration-200"
             onClick={logOutUserHandler}
           >
             Log Out
           </button>
         </div>
       </header>
-      <main className="flex justify-center mt-2">
+      <main className="flex justify-center mt-2 mb-2">
         <button
-          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
+          className="bg-blue-500 dark:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
           type="button"
           onClick={verifyEmailHandler}
         >

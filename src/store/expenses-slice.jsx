@@ -21,9 +21,9 @@ const expensesSlice = createSlice({
         const oldAmount = parseFloat(
           state.expenses[existingExpenseIndex].amount
         );
-        state.totalAmount -= oldAmount;
+        state.totalExpenseAmount -= oldAmount;
         state.expenses[existingExpenseIndex] = action.payload;
-        state.totalAmount += parseFloat(action.payload.amount);
+        state.totalExpenseAmount += parseFloat(action.payload.amount);
       }
     },
     deleteExpense(state, action) {

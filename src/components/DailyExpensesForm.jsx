@@ -6,7 +6,7 @@ import { expenseActions } from "../store/expenses-slice";
 
 const DailyExpensesForm = () => {
   const authEmail = useSelector((state) => state.auth.email);
-  const expenseList = useSelector((state) => state.expense.expenses)
+  const expenseList = useSelector((state) => state.expense.expenses);
   const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
   // const [expenses, setExpenses] = useState([]);
@@ -169,18 +169,17 @@ const DailyExpensesForm = () => {
     getExpenses();
   }, []);
 
-  console.log(expenseList);
   return (
     <>
-      <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-6">
-        <h2 className="text-2xl font-semibold text-center mb-4">
+      <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 dark:text-gray-200 shadow-md rounded-md mt-6">
+        <h2 className="text-2xl font-semibold text-center mb-4 dark:text-gray-100">
           {isEditing ? "Edit Expense" : "Add Daily Expense"}
         </h2>
         <form onSubmit={submitHandler} className="space-y-4">
           <div>
             <label
               htmlFor="expenseAmount"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
             >
               Amount Spent
             </label>
@@ -188,7 +187,7 @@ const DailyExpensesForm = () => {
               type="number"
               id="expenseAmount"
               ref={amountInputRef}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
               required
             />
           </div>
@@ -196,7 +195,7 @@ const DailyExpensesForm = () => {
           <div>
             <label
               htmlFor="expenseDescription"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
             >
               Description
             </label>
@@ -204,7 +203,7 @@ const DailyExpensesForm = () => {
               type="text"
               id="expenseDescription"
               ref={descriptionInputRef}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
               required
             />
           </div>
@@ -212,14 +211,14 @@ const DailyExpensesForm = () => {
           <div>
             <label
               htmlFor="expenseCategory"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
             >
               Category
             </label>
             <select
               id="expenseCategory"
               ref={categoryInputRef}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
               required
             >
               <option value="">Select Category</option>
@@ -232,7 +231,7 @@ const DailyExpensesForm = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
+            className="w-full bg-blue-500 dark:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800 transition duration-200"
           >
             {isEditing ? "Update Expense" : "Add Expense"}
           </button>
