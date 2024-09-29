@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const ProfileForm = (props) => {
-  const authToken = useSelector(state => state.auth.token)
+  const authToken = useSelector((state) => state.auth.token);
   const profileNameRef = useRef();
   const profilePhotoRef = useRef();
 
@@ -39,7 +39,6 @@ const ProfileForm = (props) => {
   };
 
   const fetchData = useCallback(async () => {
-    console.log(authToken);
     try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",

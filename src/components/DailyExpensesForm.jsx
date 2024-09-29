@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import DailyExpensesList from "./DailyExpensesList";
+import DailyExpensesSection from "./DailyExpensesSection";
 import ModalContext from "../store/modal-context";
 import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../store/expenses-slice";
 
 const DailyExpensesForm = () => {
   const authEmail = useSelector((state) => state.auth.email);
-  const expenseList = useSelector((state) => state.expense.expenses);
   const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
   // const [expenses, setExpenses] = useState([]);
@@ -136,34 +135,7 @@ const DailyExpensesForm = () => {
     categoryInputRef.current.value = expense.category;
   };
 
-  const deleteExpenseHandler = async (id) => {
-    const userMail = authEmail.replace(".", "");
-    try {
-      const response = await fetch(
-        `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${id}.json`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (response.ok) {
-        dispatch(expenseActions.deleteExpense(id));
-        // getExpenses();
-        modalCtx.showModal({
-          title: "Expense Deleted",
-          message: "The expense was successfully deleted.",
-        });
-      } else {
-        const data = await response.json();
-        console.log(data);
-        throw new Error(data.error.message || "Something went wrong");
-      }
-    } catch (error) {
-      modalCtx.showModal({
-        title: "Couldn't delete expense",
-        message: error.message || "Something went wrong",
-      });
-    }
-  };
+  
 
   useEffect(() => {
     getExpenses();
@@ -237,9 +209,7 @@ const DailyExpensesForm = () => {
           </button>
         </form>
       </div>
-      <DailyExpensesList
-        expenseList={expenseList}
-        onDeleteExpense={deleteExpenseHandler}
+      <DailyExpensesSection
         onEditExpense={editExpenseHandler}
       />
     </>
