@@ -1,13 +1,15 @@
 import React, { useContext, useRef } from "react";
-import Modal from "../UI/Modals";
-import ModalContext from "../store/modal-context";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
+import Modal from "../UI/Modals";
+import ModalContext from "../store/modal-context";
 import { authActions } from "../store/auth-slice";
 
 const SignInPage = () => {
-  const dispatch = useDispatch();
   const modalCtx = useContext(ModalContext);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const emailSignInRef = useRef();
@@ -33,17 +35,20 @@ const SignInPage = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          dispatch(authActions.login({idToken:data.idToken, email:enteredSignInMail}));
-          // modalCtx.loginHandler(data.idToken, enteredSignInMail);
-          navigate("/welcome");
-        } else {
-          const data = await response.json();
-          console.log(data);
+        const data = await response.json();
+        console.log(data);
+        
+        if (!response.ok) {
           throw new Error(data.error.message || "Could not Log In. Try again!");
         }
+
+        dispatch(
+          authActions.login({
+            idToken: data.idToken,
+            email: enteredSignInMail,
+          })
+        );
+        navigate("/welcome");
       } catch (error) {
         modalCtx.showModal({
           title: "Sign In Failed",
@@ -94,10 +99,7 @@ const SignInPage = () => {
             />
           </div>
           <div className="flex justify-center mb-2">
-            <Link
-              className="text-red-500 hover:underline"
-              to="/forgotpassword"
-            >
+            <Link className="text-red-500 hover:underline" to="/forgotpassword">
               Forgot Password?
             </Link>
           </div>

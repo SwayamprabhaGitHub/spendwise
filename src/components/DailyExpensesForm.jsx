@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import DailyExpensesSection from "./DailyExpensesSection";
 import ModalContext from "../store/modal-context";
-import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../store/expenses-slice";
 
 const DailyExpensesForm = () => {
+  const modalCtx = useContext(ModalContext);
+
   const authEmail = useSelector((state) => state.auth.email);
   const dispatch = useDispatch();
-  const modalCtx = useContext(ModalContext);
-  // const [expenses, setExpenses] = useState([]);
+
   const [isEditing, setIsEditing] = useState(false); // To track editing state
   const [editExpenseId, setEditExpenseId] = useState(null); // Track the ID of the expense being edited
 
@@ -42,7 +44,6 @@ const DailyExpensesForm = () => {
             amount: totalAmount,
           })
         );
-        // setExpenses(fetchedData);
       } else {
         const data = await response.json();
         console.log(data);
@@ -84,32 +85,27 @@ const DailyExpensesForm = () => {
           headers: { "Content-Type": "application/json" },
         });
 
-        if (response.ok) {
-          // getExpenses();
-
-          if (isEditing) {
-            dispatch(
-              expenseActions.editExpense({ id: editExpenseId, ...newExpense })
-            );
-            setIsEditing(false);
-            setEditExpenseId(null);
-            modalCtx.showModal({
-              title: "Expense Updated",
-              message: "expense updated successfully",
-            });
-          } else {
-            const data = await response.json();
-            const expenseId = data.name;
-            dispatch(
-              expenseActions.addExpense({ id: expenseId, ...newExpense })
-            );
-            modalCtx.showModal({
-              title: "Expense added",
-              message: "expense added successfully",
-            });
-          }
-        } else {
+        if (!response.ok) {
           throw new Error("Something went wrong");
+        }
+        if (isEditing) {
+          dispatch(
+            expenseActions.editExpense({ id: editExpenseId, ...newExpense })
+          );
+          setIsEditing(false);
+          setEditExpenseId(null);
+          modalCtx.showModal({
+            title: "Expense Updated",
+            message: "expense updated successfully",
+          });
+        } else {
+          const data = await response.json();
+          const expenseId = data.name;
+          dispatch(expenseActions.addExpense({ id: expenseId, ...newExpense }));
+          modalCtx.showModal({
+            title: "Expense added",
+            message: "expense added successfully",
+          });
         }
       } catch (error) {
         modalCtx.showModal({
@@ -134,8 +130,6 @@ const DailyExpensesForm = () => {
     descriptionInputRef.current.value = expense.description;
     categoryInputRef.current.value = expense.category;
   };
-
-  
 
   useEffect(() => {
     getExpenses();
@@ -209,9 +203,7 @@ const DailyExpensesForm = () => {
           </button>
         </form>
       </div>
-      <DailyExpensesSection
-        onEditExpense={editExpenseHandler}
-      />
+      <DailyExpensesSection onEditExpense={editExpenseHandler} />
     </>
   );
 };

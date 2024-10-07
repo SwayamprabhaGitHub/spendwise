@@ -4,43 +4,43 @@ import { expenseActions } from "../store/expenses-slice";
 import ModalContext from "../store/modal-context";
 
 const DailyExpensesList = (props) => {
-    const authEmail = useSelector((state) => state.auth.email);
-    const expenseList = useSelector((state) => state.expense.expenses);
-    const modalCtx = useContext(ModalContext);
+  const modalCtx = useContext(ModalContext);
 
-    const dispatch = useDispatch();
+  const authEmail = useSelector((state) => state.auth.email);
+  const expenseList = useSelector((state) => state.expense.expenses);
+  const dispatch = useDispatch();
 
-    const deleteExpenseHandler = async (id) => {
-        const userMail = authEmail.replace(".", "");
-        try {
-          const response = await fetch(
-            `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${id}.json`,
-            {
-              method: "DELETE",
-            }
-          );
-          if (response.ok) {
-            dispatch(expenseActions.deleteExpense(id));
-            // getExpenses();
-            modalCtx.showModal({
-              title: "Expense Deleted",
-              message: "The expense was successfully deleted.",
-            });
-          } else {
-            const data = await response.json();
-            console.log(data);
-            throw new Error(data.error.message || "Something went wrong");
-          }
-        } catch (error) {
-          modalCtx.showModal({
-            title: "Couldn't delete expense",
-            message: error.message || "Something went wrong",
-          });
+  const deleteExpenseHandler = async (id) => {
+    const userMail = authEmail.replace(".", "");
+    try {
+      const response = await fetch(
+        `https://spendwise-acde3-default-rtdb.firebaseio.com/${userMail}/expenses/${id}.json`,
+        {
+          method: "DELETE",
         }
-      };
+      );
+      if (response.ok) {
+        dispatch(expenseActions.deleteExpense(id));
+        modalCtx.showModal({
+          title: "Expense Deleted",
+          message: "The expense was successfully deleted.",
+        });
+      } else {
+        const data = await response.json();
+        console.log(data);
+        throw new Error(data.error.message || "Something went wrong");
+      }
+    } catch (error) {
+      modalCtx.showModal({
+        title: "Couldn't delete expense",
+        message: error.message || "Something went wrong",
+      });
+    }
+  };
 
-    return <>
-    {expenseList.length === 0 ? (
+  return (
+    <>
+      {expenseList.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400 text-lg">
           No expenses added yet.
         </p>
@@ -87,6 +87,7 @@ const DailyExpensesList = (props) => {
         </ul>
       )}
     </>
-}
+  );
+};
 
 export default DailyExpensesList;

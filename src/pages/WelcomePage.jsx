@@ -1,22 +1,23 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import ProfileForm from "../components/ProfileForm";
 import ModalContext from "../store/modal-context";
 import Modal from "../UI/Modals";
 import DailyExpensesForm from "../components/DailyExpensesForm";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/auth-slice";
 import { themeActions } from "../store/theme-slice";
 
 const WelcomePage = () => {
+  const [updateProfile, setUpdateProfile] = useState(false);
+  const modalCtx = useContext(ModalContext);
+
   const isAuth = useSelector((state) => state.auth.isLoggedIn);
   const authToken = useSelector((state) => state.auth.token);
 
   const dispatch = useDispatch();
-  const modalCtx = useContext(ModalContext);
   const navigate = useNavigate();
-
-  const [updateProfile, setUpdateProfile] = useState(false);
 
   const handleProfileForm = () => {
     setUpdateProfile(false);

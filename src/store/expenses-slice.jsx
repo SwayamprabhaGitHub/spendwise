@@ -36,8 +36,8 @@ const expensesSlice = createSlice({
         );
       }
       const updatedExpenseList = state.expenses.filter((expense) => {
-        return expense.id !== action.payload
-      })
+        return expense.id !== action.payload;
+      });
       state.expenses = updatedExpenseList;
     },
   },

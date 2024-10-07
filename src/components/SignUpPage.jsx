@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
+import { Link } from "react-router-dom";
 import Modal from "../UI/Modals";
 import ModalContext from "../store/modal-context";
-import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   const modalCtx = useContext(ModalContext);
@@ -42,18 +42,15 @@ const SignUpPage = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          modalCtx.showModal({
-            title: "Sign Up Successful",
-            message: "You can login now",
-          });
-        } else {
-          const data = await response.json();
-          console.log(data);
+        const data = await response.json();
+        console.log(data);
+        if (!response.ok) {
           throw new Error(data.error.message || "Sign up failed");
         }
+        modalCtx.showModal({
+          title: "Sign Up Successful",
+          message: "You can login now",
+        });
       } catch (error) {
         modalCtx.showModal({
           title: "Sign Up Failed",
