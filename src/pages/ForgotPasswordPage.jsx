@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const emailInputRef = useRef();
 
   const forgotPswrdFormHandler = (event) => {
@@ -26,6 +28,7 @@ const ForgotPasswordPage = () => {
           console.log(response);
           const data = await response.json();
           console.log(data);
+          navigate('/');
         } else {
           throw new Error("something went wrong");
         }
