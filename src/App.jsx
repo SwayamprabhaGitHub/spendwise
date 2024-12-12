@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import SignInPage from "./components/SignInPage";
 import WelcomePage from "./pages/WelcomePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";

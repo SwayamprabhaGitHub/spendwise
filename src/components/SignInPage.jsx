@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
 import Modal from "../UI/Modals";
 import ModalContext from "../store/modal-context";
 import { authActions } from "../store/auth-slice";
@@ -62,23 +61,23 @@ const SignInPage = () => {
   return (
     <>
       {modalCtx.modalMsg && <Modal />}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
         <form
-          className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"
+          className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg sm:max-w-md md:max-w-lg"
           onSubmit={SigninFormSubmitHandler}
         >
-          <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
-          <div className="relative mb-6">
+          <h2 className="text-xl font-bold text-center mb-4 sm:text-2xl md:mb-6">Sign In</h2>
+          <div className="relative mb-4 sm:mb-6">
             <label
               htmlFor="user-email"
-              className="block text-gray-700 font-semibold text-xl mb-2"
+              className="block text-gray-700 font-semibold text-lg mb-1 sm:text-xl"
             >
               Email
             </label>
             <input
               type="email"
               id="user-email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               ref={emailSignInRef}
             />
@@ -86,33 +85,33 @@ const SignInPage = () => {
           <div className="relative mb-6">
             <label
               htmlFor="user-pswrd"
-              className="block text-gray-700 font-semibold text-xl mb-2"
+              className="block text-gray-700 font-semibold text-lg mb-1 sm:text-xl"
             >
               Password
             </label>
             <input
               type="password"
               id="user-pswrd"
-              className="peer w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="peer w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               ref={pswrdSignInRef}
             />
           </div>
           <div className="flex justify-center mb-2">
-            <Link className="text-red-500 hover:underline" to="/forgotpassword">
+            <Link className="text-sm text-red-500 hover:underline sm:text-base" to="/forgotpassword">
               Forgot Password?
             </Link>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition duration-200"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Login
           </button>
         </form>
         <div className="mt-4">
-          <Link className="text-blue-500 hover:underline" to="/signup">
+          <Link className="text-sm text-blue-500 hover:underline sm:text-base" to="/signup">
             Don't have an account? Sign Up
           </Link>
         </div>
