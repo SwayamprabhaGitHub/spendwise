@@ -29,36 +29,7 @@ const WelcomePage = () => {
     navigate("/");
   };
 
-  const verifyEmailHandler = async () => {
-    try {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            requestType: "VERIFY_EMAIL",
-            idToken: authToken,
-          }),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      if (response.ok) {
-        modalCtx.showModal({
-          title: "Verifying Email",
-          message: "Please check your email!!",
-        });
-      } else {
-        const data = await response.json();
-        console.log(data);
-        throw new Error(data.error.message);
-      }
-    } catch (error) {
-      modalCtx.showModal({
-        title: "Couldn't verify Email",
-        message: error.message || "Something went wrong!",
-      });
-    }
-  };
+
 
   return (
     <>
@@ -101,13 +72,7 @@ const WelcomePage = () => {
         </div>
       </header>
       <main className="flex justify-center mt-2 mb-2">
-        <button
-          className="bg-blue-500 dark:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
-          type="button"
-          onClick={verifyEmailHandler}
-        >
-          Verify Email ID
-        </button>
+       
       </main>
       {updateProfile && <ProfileForm onCancel={handleProfileForm} />}
       {isAuth && <DailyExpensesForm />}

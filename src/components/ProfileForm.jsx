@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import ModalContext from "../store/modal-context";
 
 const ProfileForm = (props) => {
+  const modalCtx = useContext(ModalContext);
   const authToken = useSelector((state) => state.auth.token);
   const profileNameRef = useRef();
   const profilePhotoRef = useRef();
@@ -73,10 +75,51 @@ const ProfileForm = (props) => {
     }
   }, [authToken]);
 
+  const verifyEmailHandler = async () => {
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyADy5YIH48-QJJLUTErc0fgjMWRfK36tF4",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requestType: "VERIFY_EMAIL",
+            idToken: authToken,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.ok) {
+        modalCtx.showModal({
+          title: "Verifying Email",
+          message: "Please check your email!!",
+        });
+      } else {
+        const data = await response.json();
+        console.log(data);
+        throw new Error(data.error.message);
+      }
+    } catch (error) {
+      modalCtx.showModal({
+        title: "Couldn't verify Email",
+        message: error.message || "Something went wrong!",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
   return (
+    <>
+    <div className="flex justify-center items-center">
+     <button
+          className="bg-blue-500 dark:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
+          type="button"
+          onClick={verifyEmailHandler}
+        >
+          Verify Email ID
+        </button>
+        </div>
     <form
       className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto"
       onSubmit={profileUpdateHandler}
@@ -122,7 +165,7 @@ const ProfileForm = (props) => {
           ref={profilePhotoRef}
         />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-center">
         <button
           className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200"
           type="submit"
@@ -131,6 +174,7 @@ const ProfileForm = (props) => {
         </button>
       </div>
     </form>
+    </>
   );
 };
 
