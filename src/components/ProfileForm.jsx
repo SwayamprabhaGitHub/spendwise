@@ -111,9 +111,9 @@ const ProfileForm = (props) => {
   }, [fetchData]);
   return (
     <>
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center mb-2">
      <button
-          className="bg-blue-500 dark:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
+          className="bg-blue-500 dark:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
           type="button"
           onClick={verifyEmailHandler}
         >
@@ -121,13 +121,13 @@ const ProfileForm = (props) => {
         </button>
         </div>
     <form
-      className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto"
+      className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 max-w-lg mx-auto"
       onSubmit={profileUpdateHandler}
     >
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Contact details</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Contact details</h1>
         <button
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
+          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600 transition duration-200"
           type="button"
           onClick={props.onCancel}
         >
@@ -137,13 +137,13 @@ const ProfileForm = (props) => {
 
       <div className="mb-6">
         <label
-          className="block text-gray-700 font-semibold mb-2"
+          className="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
           htmlFor="profileName"
         >
           Full Name
         </label>
         <input
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
           type="text"
           id="profileName"
           required
@@ -152,13 +152,13 @@ const ProfileForm = (props) => {
       </div>
       <div className="mb-6">
         <label
-          className="block text-gray-700 font-semibold mb-2"
+          className="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
           htmlFor="profilePhoto"
         >
           Profile Photo URL
         </label>
         <input
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
           type="text"
           id="profilePhoto"
           required
@@ -167,7 +167,7 @@ const ProfileForm = (props) => {
       </div>
       <div className="flex justify-center">
         <button
-          className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200"
+          className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500 transition duration-200"
           type="submit"
         >
           Update
