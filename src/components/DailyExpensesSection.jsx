@@ -43,7 +43,7 @@ const DailyExpensesSection = (props) => {
   };
   return (
     <div className="mt-8 bg-gray-50 dark:bg-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg max-w-7xl mx-auto">
-      <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b pb-2">
+      <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b pb-2 text-center sm:text-left">
         Your Expenses
       </h3>
       <div className="bg-gray-100 dark:bg-gray-700 p-4 mb-6 rounded-md text-center">
@@ -56,23 +56,23 @@ const DailyExpensesSection = (props) => {
       </div>
       <DailyExpensesList onEditExpense={props.onEditExpense} />
       {totalAmount > 10000 && (
-        <div className="flex justify-center mb-6 mt-6 space-x-4">
+        <div className="flex flex-col sm:flex-row justify-center mb-6 mt-6 gap-2 sm:space-y-0 sm:space-x-4">
           <button
             onClick={downloadCSVHandler}
-            className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200"
+            className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200 w-full sm:w-auto"
           >
             Download Expense List
           </button>
           <button
             onClick={handlePremium}
-            className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200"
+            className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200 w-full sm:w-auto"
           >
             {premium ? "De-activate Premium" : "Activate Premium"}
           </button>
           {premium && (
             <button
               onClick={handleToggleTheme}
-              className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200"
+              className="bg-purple-500 dark:bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-600 dark:hover:bg-purple-800 transition duration-200 w-full sm:w-auto"
             >
               {isDarkTheme ? "Switch to Light Mode" : "Switch to Dark Mode"}
             </button>

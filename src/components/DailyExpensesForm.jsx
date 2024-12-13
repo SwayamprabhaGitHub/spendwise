@@ -137,7 +137,7 @@ const DailyExpensesForm = () => {
 
   return (
     <>
-      <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 dark:text-gray-200 shadow-md rounded-md mt-6">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 bg-white dark:bg-gray-800 dark:text-gray-200 shadow-md rounded-md mt-6">
         <h2 className="text-2xl font-semibold text-center mb-4 dark:text-gray-100">
           {isEditing ? "Edit Expense" : "Add Daily Expense"}
         </h2>
@@ -153,7 +153,7 @@ const DailyExpensesForm = () => {
               type="number"
               id="expenseAmount"
               ref={amountInputRef}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
               required
             />
           </div>
@@ -169,7 +169,7 @@ const DailyExpensesForm = () => {
               type="text"
               id="expenseDescription"
               ref={descriptionInputRef}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
               required
             />
           </div>
@@ -184,7 +184,7 @@ const DailyExpensesForm = () => {
             <select
               id="expenseCategory"
               ref={categoryInputRef}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-gray-200"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
               required
             >
               <option value="">Select Category</option>

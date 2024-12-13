@@ -111,7 +111,7 @@ const ProfileForm = (props) => {
   }, [fetchData]);
   return (
     <>
-    <div className="flex justify-center items-center mb-2">
+    <div className="flex justify-center items-center mb-4">
      <button
           className="bg-blue-500 dark:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-gray-600 transition duration-200"
           type="button"
@@ -121,7 +121,7 @@ const ProfileForm = (props) => {
         </button>
         </div>
     <form
-      className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 max-w-lg mx-auto"
+      className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 md:p-8 max-w-lg mx-auto"
       onSubmit={profileUpdateHandler}
     >
       <div className="flex justify-between items-center mb-6">
