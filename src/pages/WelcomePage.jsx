@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProfileForm from "../components/ProfileForm";
 import ModalContext from "../store/modal-context";
 import Modal from "../UI/Modals";
+import Logo from "../assets/Spendwise_logo_no_background.png";
 import DailyExpensesForm from "../components/DailyExpensesForm";
 import { authActions } from "../store/auth-slice";
 import { themeActions } from "../store/theme-slice";
@@ -35,14 +36,23 @@ const WelcomePage = () => {
     <>
       {modalCtx.modalMsg && <Modal />}
       <header className="flex flex-col md:flex-row justify-between items-center bg-blue-500 dark:bg-gray-800 text-white p-4 sm:p-6 shadow-lg mb-4 md:mb-6">
-        <div className="mb-4 md:mb-0">
-          {updateProfile ? (
-            <p className="text-xl sm:text-2xl font-semibold">
-              Empowering smarter spending, every step of the way.
-            </p>
-          ) : (
-            <p className="text-xl sm:text-2xl font-semibold">"Spendwise: Track, Save, Succeed!"</p>
-          )}
+        <div className="flex items-center gap-3 mb-4 md:mb-0">
+        <img
+            src={Logo}
+            alt="Spendwise Logo"
+            className="w-12 h-12 sm:w-16 sm:h-16 object-contain border-4 border-black rounded-full"
+          />
+          <div>
+            {updateProfile ? (
+              <p className="text-xl sm:text-2xl font-semibold">
+                Empowering smarter spending, every step of the way.
+              </p>
+            ) : (
+              <p className="text-xl sm:text-2xl font-semibold">
+                Spendwise: Track, Save, Succeed!
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex flex-col md:flex-row items-center gap-3 sm:gap-4">
           {updateProfile ? (
