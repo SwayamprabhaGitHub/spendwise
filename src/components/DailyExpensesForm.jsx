@@ -17,6 +17,7 @@ const DailyExpensesForm = () => {
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
   const categoryInputRef = useRef();
+  const formRef = useRef(); // Add a ref for the form
 
   const getExpenses = async () => {
     const userMail = authEmail.replace(".", "");
@@ -129,6 +130,10 @@ const DailyExpensesForm = () => {
     amountInputRef.current.value = expense.amount;
     descriptionInputRef.current.value = expense.description;
     categoryInputRef.current.value = expense.category;
+
+    // Scroll into view when editing
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   };
 
   useEffect(() => {
@@ -137,7 +142,8 @@ const DailyExpensesForm = () => {
 
   return (
     <>
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 bg-white dark:bg-gray-800 dark:text-gray-200 shadow-md rounded-md mt-6">
+      <div  ref={formRef} // Attach the ref to the form container
+        className="max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 bg-white dark:bg-gray-800 dark:text-gray-200 shadow-md rounded-md mt-6">
         <h2 className="text-2xl font-semibold text-center mb-4 dark:text-gray-100">
           {isEditing ? "Edit Expense" : "Add Daily Expense"}
         </h2>
